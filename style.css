@@ -1,0 +1,902 @@
+/* Importações de Fontes e Ícones */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto+Mono:wght@400;700&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css');
+
+/* Variáveis CSS Globais (Cores, Fontes) */
+:root {
+    --font-primary: 'Poppins', sans-serif;
+    --font-mono: 'Roboto Mono', monospace;
+
+    /* Tema Claro */
+    --bg-gradient-start-light: #6a11cb;
+    --bg-gradient-end-light: #2575fc;
+    --bg-working-light: linear-gradient(135deg, #ff7e5f, #feb47b);
+    --bg-breaking-light: linear-gradient(135deg, #00c6ff, #0072ff);
+    --bg-focus-light: linear-gradient(135deg, #f1c40f, #f39c12);
+    --bg-focus-break-light: linear-gradient(135deg, #a8e063, #56ab2f);
+    --container-bg-light: rgba(255, 255, 255, 0.97);
+    --section-bg-light: #ffffff;
+    --text-color-light: #333;
+    --text-light-light: #555;
+    --text-muted-light: #777;
+    --border-color-light: #e0e0e0;
+    --shadow-color-light: rgba(0, 0, 0, 0.1);
+    --input-bg-light: #fff;
+    --input-border-light: #ccc;
+    --button-secondary-bg-light: #f0f0f0;
+    --button-secondary-text-light: #555;
+    --button-secondary-hover-light: #e0e0e0;
+    --tab-bg-light: #eee;
+    --tab-active-bg-light: #fff;
+    --table-header-bg-light: #f8f9fa;
+    --table-row-hover-light: #f1f1f1;
+
+    /* Tema Escuro */
+    --bg-gradient-start-dark: #232526;
+    --bg-gradient-end-dark: #414345;
+    --bg-working-dark: linear-gradient(135deg, #c0392b, #8e44ad);
+    --bg-breaking-dark: linear-gradient(135deg, #1e3c72, #2a5298);
+    --bg-focus-dark: linear-gradient(135deg, #b7950b, #e67e22);
+    --bg-focus-break-dark: linear-gradient(135deg, #11998e, #38ef7d);
+    --container-bg-dark: rgba(40, 40, 40, 0.95);
+    --section-bg-dark: #2c2c2c;
+    --text-color-dark: #f0f0f0;
+    --text-light-dark: #b0b0b0;
+    --text-muted-dark: #999;
+    --border-color-dark: #444;
+    --shadow-color-dark: rgba(0, 0, 0, 0.3);
+    --input-bg-dark: #333;
+    --input-border-dark: #555;
+    --button-secondary-bg-dark: #444;
+    --button-secondary-text-dark: #f0f0f0;
+    --button-secondary-hover-dark: #555;
+    --tab-bg-dark: #3a3a3a;
+    --tab-active-bg-dark: #2c2c2c; /* Mesma cor da seção para integração */
+    --table-header-bg-dark: #333;
+    --table-row-hover-dark: #3f3f3f;
+
+    /* Cores Comuns */
+    --primary-color: #e74c3c; /* Vermelho Pomodoro */
+    --secondary-color: #3498db; /* Azul */
+    --focus-color: #f1c40f; /* Amarelo Foco */
+    --focus-break-color: #8BC34A; /* Verde Descanso Foco */
+    --success-color: #2ecc71; /* Verde Sucesso */
+    --danger-color: #e74c3c; /* Vermelho Perigo/Remover */
+    --warning-color: #f39c12; /* Laranja Aviso */
+    --info-color: #3498db; /* Azul Informação */
+    --white: #fff;
+    --black: #000;
+}
+
+/* Estilos Base do Body */
+body {
+    font-family: var(--font-primary);
+    margin: 0;
+    padding: 30px 20px;
+    background-attachment: fixed; /* Gradiente fixo */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Alinha container no topo */
+    min-height: 100vh;
+    transition: background 0.8s ease, color 0.3s ease;
+}
+
+/* Aplicação de Cores e Fundos por Tema */
+body.theme-light {
+    background: linear-gradient(135deg, var(--bg-gradient-start-light), var(--bg-gradient-end-light));
+    color: var(--text-color-light);
+    --container-bg: var(--container-bg-light);
+    --section-bg: var(--section-bg-light);
+    --text-color: var(--text-color-light);
+    --text-light: var(--text-light-light);
+    --text-muted: var(--text-muted-light);
+    --border-color: var(--border-color-light);
+    --shadow-color: var(--shadow-color-light);
+    --input-bg: var(--input-bg-light);
+    --input-border: var(--input-border-light);
+    --button-secondary-bg: var(--button-secondary-bg-light);
+    --button-secondary-text: var(--button-secondary-text-light);
+    --button-secondary-hover: var(--button-secondary-hover-light);
+    --tab-bg: var(--tab-bg-light);
+    --tab-active-bg: var(--tab-active-bg-light);
+    --table-header-bg: var(--table-header-bg-light);
+    --table-row-hover: var(--table-row-hover-light);
+    --bg-working-gradient: var(--bg-working-light);
+    --bg-breaking-gradient: var(--bg-breaking-light);
+    --bg-focus-gradient: var(--bg-focus-light);
+    --bg-focus-break-gradient: var(--bg-focus-break-light);
+}
+
+body.theme-dark {
+    background: linear-gradient(135deg, var(--bg-gradient-start-dark), var(--bg-gradient-end-dark));
+    color: var(--text-color-dark);
+    --container-bg: var(--container-bg-dark);
+    --section-bg: var(--section-bg-dark);
+    --text-color: var(--text-color-dark);
+    --text-light: var(--text-light-dark);
+    --text-muted: var(--text-muted-dark);
+    --border-color: var(--border-color-dark);
+    --shadow-color: var(--shadow-color-dark);
+    --input-bg: var(--input-bg-dark);
+    --input-border: var(--input-border-dark);
+    --button-secondary-bg: var(--button-secondary-bg-dark);
+    --button-secondary-text: var(--button-secondary-text-dark);
+    --button-secondary-hover: var(--button-secondary-hover-dark);
+    --tab-bg: var(--tab-bg-dark);
+    --tab-active-bg: var(--section-bg-dark); /* Usa fundo da seção para aba ativa */
+    --table-header-bg: var(--table-header-bg-dark);
+    --table-row-hover: var(--table-row-hover-dark);
+    --bg-working-gradient: var(--bg-working-dark);
+    --bg-breaking-gradient: var(--bg-breaking-dark);
+    --bg-focus-gradient: var(--bg-focus-dark);
+    --bg-focus-break-gradient: var(--bg-focus-break-dark);
+}
+
+/* Fundos Dinâmicos por Estado do Timer */
+body.state-working { background: var(--bg-working-gradient); }
+body.state-breaking { background: var(--bg-breaking-gradient); }
+body.state-focus { background: var(--bg-focus-gradient); }
+body.state-focus-break { background: var(--bg-focus-break-gradient); }
+
+/* Container Principal */
+.container {
+    background-color: var(--container-bg);
+    padding: 30px 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px var(--shadow-color);
+    max-width: 900px;
+    width: 100%;
+    backdrop-filter: blur(5px); /* Efeito de vidro fosco */
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Borda sutil */
+    transition: background-color 0.3s ease;
+}
+
+/* Estilos de Texto */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--text-color);
+    margin-top: 0;
+    font-weight: 600; /* Um pouco mais forte */
+}
+a { color: var(--secondary-color); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Estilos de Botões e Inputs */
+button, .button-like-label {
+    font-family: var(--font-primary);
+    cursor: pointer;
+    border-radius: 8px;
+    border: none;
+    padding: 10px 18px;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    background-color: var(--button-secondary-bg);
+    color: var(--button-secondary-text);
+    border: 1px solid var(--border-color);
+    text-decoration: none; /* Para .button-like-label */
+    vertical-align: middle; /* Alinha com texto adjacente */
+}
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+button:not(:disabled):active,
+.button-like-label:active {
+     transform: scale(0.98); /* Efeito de clique */
+}
+button:hover:not(:disabled),
+.button-like-label:hover {
+    background-color: var(--button-secondary-hover);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Sombra sutil no hover */
+}
+button i, .button-like-label i { font-size: 0.9em; vertical-align: middle; }
+
+input[type="text"],
+input[type="number"],
+input[type="email"], /* Embora não usado, mantém consistência */
+textarea,
+select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--input-border);
+    border-radius: 6px;
+    font-size: 1rem;
+    font-family: var(--font-primary);
+    box-sizing: border-box; /* Garante padding dentro da largura */
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2); /* Foco visível */
+}
+textarea { resize: vertical; min-height: 40px; }
+/* Remove setas de input number (Webkit/Firefox) */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type="number"] {
+    -moz-appearance: textfield; /* Firefox */
+}
+
+/* Notificação Toast */
+.toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 25px; /* Bordas mais arredondadas */
+    font-size: 0.9rem;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease, visibility 0s linear 0.5s, bottom 0.5s ease;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    max-width: 80%;
+    text-align: center;
+}
+.toast.show {
+    bottom: 40px; /* Sobe um pouco ao aparecer */
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.5s ease, visibility 0s linear 0s, bottom 0.5s ease;
+}
+.toast.success { background-color: rgba(46, 204, 113, 0.9); } /* Verde */
+.toast.info { background-color: rgba(52, 152, 219, 0.9); } /* Azul */
+.toast.warning { background-color: rgba(243, 156, 18, 0.9); } /* Laranja */
+.toast.error { background-color: rgba(231, 76, 60, 0.9); } /* Vermelho */
+.toast i {
+    font-size: 1.1em;
+    flex-shrink: 0; /* Impede que o ícone encolha */
+}
+
+/* Cabeçalho da Aplicação */
+.app-header {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    flex-wrap: wrap; /* Permite quebrar linha em telas menores */
+    gap: 10px;
+}
+.app-header h1 {
+    color: var(--text-color);
+    font-weight: 700;
+    margin: 0;
+    font-size: 1.8rem;
+}
+.app-header h1 i {
+    margin-right: 10px;
+    color: var(--primary-color); /* Ícone do troféu vermelho */
+}
+.settings-controls { display: flex; gap: 10px; flex-wrap: wrap; }
+.settings-controls button, .button-like-label {
+    background: none;
+    border: 1px solid var(--border-color);
+    color: var(--text-light);
+    padding: 6px 12px; /* Menor padding para botões de controle */
+    font-size: 0.85rem;
+}
+.settings-controls button:hover:not(:disabled),
+.button-like-label:hover {
+     background-color: var(--button-secondary-hover);
+     border-color: var(--button-secondary-hover);
+     color: var(--button-secondary-text);
+}
+#reset-all-button { color: var(--danger-color); border-color: var(--danger-color); }
+#reset-all-button:hover { background-color: var(--danger-color); color: var(--white); }
+#import-data-button { /* Estilo para a label que parece botão */
+    padding: 6px 12px;
+    display: inline-flex; /* Para alinhar o ícone */
+    align-items: center;
+}
+
+/* Seletor de Modo (Pomodoro / Foco) */
+.mode-switcher {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+.mode-switcher label {
+    background-color: var(--button-secondary-bg);
+    color: var(--button-secondary-text);
+    padding: 8px 15px;
+    border-radius: 20px; /* Bordas arredondadas tipo pílula */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid var(--border-color);
+    font-size: 0.9rem;
+    display: inline-flex; /* Para alinhar ícone e texto */
+    align-items: center;
+    gap: 6px;
+}
+.mode-switcher input[type="radio"] { display: none; } /* Esconde o radio button real */
+.mode-switcher label:hover { background-color: var(--button-secondary-hover); }
+/* Estilo do label quando o radio está checado */
+.mode-switcher input[type="radio"]:checked + i + span { /* Se span for usado - não é o caso aqui */ }
+.mode-switcher input[type="radio"]:checked + label {
+     background-color: var(--secondary-color); /* Cor de destaque quando ativo */
+     color: white;
+     border-color: var(--secondary-color);
+     box-shadow: 0 2px 5px rgba(52, 152, 219, 0.4); /* Sombra quando ativo */
+}
+.mode-switcher input[type="radio"]:checked + label i { color: white; } /* Ícone branco quando ativo */
+
+/* Mini Dashboard (Stats Rápidos) */
+.mini-dashboard {
+    display: flex;
+    justify-content: space-around;
+    background-color: var(--section-bg);
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin-top: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    flex-wrap: wrap;
+    gap: 15px;
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+.mini-dashboard span { display: inline-flex; align-items: center; gap: 5px; }
+.mini-dashboard strong { color: var(--text-color); font-weight: 600; }
+.mini-dashboard i { color: var(--secondary-color); width: 16px; text-align: center; }
+/* Cores específicas para ícones do dashboard */
+.mini-dashboard span:nth-child(1) i { color: var(--primary-color); } /* Ciclos */
+.mini-dashboard span:nth-child(2) i { color: var(--focus-color); } /* Foco */
+.mini-dashboard span:nth-child(3) i { color: var(--focus-break-color); } /* Descanso */
+
+/* Seções Principais */
+section {
+    margin-bottom: 30px;
+    padding: 25px;
+    background-color: var(--section-bg);
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: background-color 0.3s ease;
+}
+section h2 {
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: var(--text-color);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+section h2 i { color: var(--secondary-color); width: 20px; text-align: center;}
+
+/* Seção do Timer */
+.timer-section {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start; /* Alinha topo dos cards */
+    flex-wrap: wrap;
+    /* Gradiente sutil no fundo da seção */
+    background: linear-gradient(145deg, var(--section-bg) 90%, transparent);
+    padding: 20px;
+    border-radius: 12px;
+}
+
+.timer { /* Card do timer */
+    flex: 1; /* Ocupa espaço disponível */
+    text-align: center;
+    min-width: 280px; /* Largura mínima */
+}
+
+#timer-status {
+    font-size: 1.1rem;
+    color: var(--text-light);
+    margin-bottom: 10px;
+    min-height: 1.2em; /* Evita pulos de layout */
+    font-weight: 400;
+    transition: color 0.3s ease;
+}
+
+#time-display {
+    font-family: var(--font-mono);
+    font-size: 5.5rem; /* Tamanho grande para destaque */
+    font-weight: 700;
+    color: var(--primary-color); /* Cor inicial Pomodoro */
+    margin-bottom: 20px;
+    line-height: 1;
+    transition: color 0.5s ease; /* Transição suave de cor */
+}
+/* Cores dinâmicas do display baseadas no estado */
+body.state-breaking #time-display { color: var(--secondary-color); } /* Azul descanso */
+body.state-focus #time-display { color: var(--focus-color); } /* Amarelo foco */
+body.state-focus-break #time-display { color: var(--focus-break-color); } /* Verde descanso foco */
+
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+.controls button { padding: 10px 16px; font-size: 0.9rem; }
+
+/* Botão Principal (Iniciar/Pausar) */
+.controls button.cta-button { background-color: var(--primary-color); color: var(--white); border: none;}
+.controls button.cta-button:hover { background-color: #c0392b; } /* Vermelho mais escuro */
+.controls button.cta-button.paused { background-color: var(--secondary-color); border: none;} /* Azul quando pausado/pronto */
+.controls button.cta-button.paused:hover { background-color: #2980b9; } /* Azul mais escuro */
+/* Cores do CTA baseadas no estado do modo Foco */
+body.state-focus .controls button.cta-button { background-color: var(--focus-color); border: none;}
+body.state-focus .controls button.cta-button:hover { background-color: #dab10d; }
+body.state-focus-break .controls button.cta-button { background-color: var(--focus-break-color); border: none;}
+body.state-focus-break .controls button.cta-button:hover { background-color: #7cb342; }
+
+#reset-button { background-color: var(--button-secondary-bg); color: var(--button-secondary-text); border: 1px solid var(--border-color); }
+#reset-button:hover { background-color: var(--button-secondary-hover); }
+
+/* Controles Específicos do Modo Foco */
+.focus-control {
+    background-color: var(--button-secondary-bg);
+    color: var(--button-secondary-text);
+    border: 1px solid var(--border-color);
+}
+.focus-control:hover { background-color: var(--button-secondary-hover); }
+/* Botão de Logar no modo Foco */
+#focus-log-button { color: var(--success-color); border: 1px solid var(--success-color); background: none;}
+#focus-log-button:hover { background-color: var(--success-color); color: var(--white);}
+
+/* Opções do Modo Foco (Checkbox) */
+.focus-options {
+    margin-top: 10px;
+    font-size: 0.85rem;
+    color: var(--text-light);
+}
+.focus-options label { display: inline-flex; align-items: center; gap: 5px; cursor: pointer;}
+.focus-options input[type="checkbox"] { width: auto; margin-right: 5px; cursor: pointer; vertical-align: middle;}
+
+/* Detalhes da Tarefa (Inputs) */
+.task-details {
+    flex: 1.5; /* Ocupa mais espaço que o timer */
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Espaçamento entre inputs */
+}
+.input-group { margin-bottom: 0; } /* Remove margem padrão se houver */
+.input-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: var(--text-light);
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.input-group label i { width: 16px; text-align: center; color: var(--text-muted); }
+
+/* Seção de Configurações */
+.settings-section {
+    display: flex;
+    flex-direction: column;
+    gap: 25px; /* Espaço entre Config. Gerais e Pomodoro */
+}
+#general-settings .input-group, #pomodoro-settings .input-group { margin-bottom: 15px; }
+#general-settings label, #pomodoro-settings label { font-size: 0.95rem; }
+
+/* Grupo de Seleção de Som */
+.sound-group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap;}
+.sound-group select { width: auto; flex-grow: 1; min-width: 150px; }
+#play-sound-test { padding: 5px 10px; background: none; border: 1px solid var(--border-color); color: var(--text-light);}
+#play-sound-test:hover { background-color: var(--button-secondary-hover); }
+
+/* Texto Informativo (Atalhos, etc.) */
+.info-text {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    background-color: rgba(0,0,0,0.03);
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin-top: 15px;
+    border: 1px solid var(--border-color);
+}
+body.theme-dark .info-text {
+     background-color: rgba(255,255,255,0.05); /* Fundo ligeiramente mais claro no tema escuro */
+}
+.info-text i { margin-right: 5px; }
+
+/* Configurações Específicas do Pomodoro */
+#pomodoro-settings h2 { margin-bottom: 10px;}
+.pomodoro-presets {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-size: 0.9rem;
+    color: var(--text-light);
+    padding-bottom: 15px;
+    border-bottom: 1px dashed var(--border-color); /* Divisor */
+}
+.pomodoro-presets span { font-weight: 600; margin-right: 5px; }
+.preset-btn {
+    background-color: var(--button-secondary-bg);
+    color: var(--button-secondary-text);
+    padding: 5px 10px; /* Botões menores */
+    font-size: 0.8rem;
+    border: 1px solid var(--border-color);
+}
+.preset-btn:hover { background-color: var(--button-secondary-hover); }
+
+#pomodoro-settings .settings-info { font-size: 0.9rem; color: var(--text-light); margin-bottom: 15px; }
+#cycle-sequence-list { margin-bottom: 15px; display: flex; flex-direction: column; gap: 10px; }
+.sequence-item {
+    background-color: rgba(0,0,0,0.02); /* Fundo sutil para cada item */
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.85rem;
+    flex-wrap: wrap; /* Permite quebrar linha em telas menores */
+}
+body.theme-dark .sequence-item { background-color: rgba(255,255,255,0.03); }
+
+.sequence-item span { flex-grow: 1; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.sequence-item input[type="number"] {
+    width: 55px;
+    padding: 4px 6px;
+    font-size: 0.85rem;
+    text-align: center;
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    border-color: var(--input-border);
+    display: inline-block; /* Garante que fique na linha */
+}
+.sequence-item .remove-sequence-btn {
+    background: none; border: none; color: var(--danger-color); cursor: pointer; font-size: 1rem; padding: 5px; margin-left: auto; /* Empurra para a direita */ flex-shrink: 0;
+}
+.sequence-item .remove-sequence-btn:hover { color: #c0392b; } /* Vermelho mais escuro */
+
+#add-sequence-btn { background-color: var(--success-color); color: var(--white); font-size: 0.9rem; padding: 8px 15px; border: none; margin-top: 5px; }
+#add-sequence-btn:hover { background-color: #27ae60; } /* Verde mais escuro */
+
+/* Grupo de Descanso Longo */
+.long-break-group {
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap; background-color: rgba(52, 152, 219, 0.1); /* Fundo azulado sutil */ padding: 12px; border-radius: 8px; margin-top: 15px; font-size: 0.9rem;
+}
+.long-break-group label { margin-bottom: 0; font-weight: normal;}
+.long-break-group input[type="number"] {
+    width: 60px;
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    border-color: var(--input-border);
+    display: inline-block;
+}
+
+/* Seção de Metas Personalizadas */
+.custom-goals-section { background-color: rgba(153, 102, 255, 0.05); /* Fundo roxo sutil */ }
+.custom-goals-section h2 i { color: #9966FF; } /* Ícone roxo */
+
+#custom-goals-list {
+    margin-bottom: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.custom-goal-item {
+    background-color: var(--section-bg); /* Usa fundo da seção para contraste */
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background-color 0.3s ease;
+    font-size: 0.9rem;
+    flex-wrap: wrap; /* Quebra linha em telas pequenas */
+}
+.custom-goal-item:hover { background-color: var(--table-row-hover); } /* Mesmo hover da tabela */
+
+.goal-status { /* Círculo de status (pendente/concluído) */
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    color: var(--white);
+    flex-shrink: 0;
+    margin-right: 5px;
+}
+.goal-status.pending { background-color: #aaa; } /* Cinza pendente */
+.goal-status.achieved { background-color: var(--success-color); } /* Verde concluído */
+
+.goal-name { font-weight: 600; color: var(--text-color); flex-grow: 1; margin-right: 10px; }
+.goal-details { font-size: 0.8rem; color: var(--text-muted); margin-right: 10px; }
+.goal-progress { font-size: 0.8rem; color: var(--text-light); white-space: nowrap; margin-left: auto; /* Empurra progresso e botão para direita */ }
+.remove-goal-btn {
+    background: none;
+    border: none;
+    color: var(--danger-color);
+    cursor: pointer;
+    padding: 5px;
+    font-size: 1rem;
+    margin-left: 10px; /* Espaço antes do botão */
+    flex-shrink: 0;
+}
+.remove-goal-btn:hover { color: #c0392b; }
+
+/* Formulário de Adicionar Meta */
+.add-goal-form {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px dashed var(--border-color);
+}
+.add-goal-form h3 { font-size: 1.1rem; margin-bottom: 15px; font-weight: 600;}
+.add-goal-form {
+    display: grid;
+    /* Layout responsivo: ajusta colunas baseado na largura */
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+    align-items: end; /* Alinha itens na parte inferior */
+}
+.add-goal-form input, .add-goal-form select { margin-bottom: 0; } /* Remove margem inferior dentro do grid */
+#add-goal-btn {
+    background-color: var(--success-color);
+    color: white;
+    padding: 10px 18px;
+    font-size: 0.95rem;
+    border: none;
+    grid-column: span 1; /* Ocupa uma coluna */
+    justify-self: start; /* Alinha botão à esquerda na sua célula */
+}
+@media (min-width: 550px) { /* Em telas maiores, ocupa mais colunas se possível */
+    #add-goal-btn { grid-column: span 1; justify-self: stretch; } /* Estica o botão */
+}
+@media (min-width: 768px) { /* Layout mais tradicional em telas maiores */
+    .add-goal-form { grid-template-columns: 2fr 1.5fr 1fr auto; }
+    #add-goal-btn { grid-column: span 1; justify-self: end; } /* Botão no final */
+}
+
+#add-goal-btn:hover { background-color: #27ae60; }
+
+/* Abas (Registro / Estatísticas) */
+.tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 20px;
+}
+.tab-button {
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent; /* Borda inferior indica aba ativa */
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 1rem;
+    color: var(--text-light);
+    transition: all 0.3s ease;
+    margin-bottom: -1px; /* Alinha borda com a borda da seção */
+    font-weight: 600;
+    display: inline-flex; /* Alinha ícone e texto */
+    align-items: center;
+    gap: 8px;
+}
+.tab-button:hover { color: var(--text-color); }
+.tab-button.active {
+    color: var(--secondary-color); /* Cor de destaque para aba ativa */
+    border-bottom-color: var(--secondary-color);
+}
+
+.tab-content { display: none; animation: fadeIn 0.5s ease; }
+.tab-content.active { display: block; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px);} to { opacity: 1; transform: translateY(0);} }
+
+/* Controles do Registro (Log) */
+.log-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;}
+.log-controls h2 { margin: 0; border: none; font-size: 1.2rem;}
+.log-controls div { display: flex; gap: 10px; flex-wrap: wrap; }
+#clear-log-button { color: var(--warning-color); border: 1px solid var(--warning-color); background: none; font-size: 0.85rem; padding: 6px 12px;}
+#clear-log-button:hover { background-color: var(--warning-color); color: var(--white); }
+#download-log-button { background-color: var(--info-color); color: var(--white); font-size: 0.85rem; padding: 6px 12px; border: none;} /* Cor Info para download */
+#download-log-button:hover { background-color: #2980b9; } /* Azul mais escuro */
+
+/* Tabela de Registro */
+.log-table-container {
+    max-height: 450px; /* Altura máxima com scroll */
+    overflow-y: auto;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin-bottom: 30px;
+    position: relative; /* Para a mensagem de vazio */
+    min-height: 50px; /* Garante espaço para a mensagem */
+}
+#log-table { width: 100%; border-collapse: collapse; }
+#log-table th, #log-table td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border-color); font-size: 0.85rem; vertical-align: middle; }
+#log-table th { background-color: var(--table-header-bg); font-weight: 600; position: sticky; top: 0; z-index: 1; /* Cabeçalho fixo ao rolar */ }
+#log-table tbody tr:last-child td { border-bottom: none; } /* Remove borda da última linha */
+#log-table tbody tr:hover { background-color: var(--table-row-hover); }
+/* Limita largura da coluna de Notas e adiciona tooltip */
+#log-table td:nth-child(3) {
+    max-width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: help; /* Indica que há mais info */
+}
+#log-table td:nth-child(3)[title]:hover { /* Mostra completo no hover se tiver title */
+    white-space: normal;
+    overflow: visible;
+    cursor: default;
+}
+.delete-log-btn { background: none; border: none; color: var(--danger-color); cursor: pointer; padding: 5px; font-size: 0.9rem;}
+.delete-log-btn:hover { color: #c0392b; }
+
+/* Mensagem de Tabela Vazia */
+#log-empty-message {
+    color: var(--text-muted);
+    text-align: center;
+    padding: 20px;
+}
+
+/* Container dos Gráficos */
+.charts-container {
+    display: grid;
+    /* Layout responsivo para gráficos */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    margin-top: 10px;
+}
+.chart-wrapper { background-color: var(--section-bg); padding: 15px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid var(--border-color); }
+.chart-wrapper h3 { text-align: center; margin-top: 0; margin-bottom: 15px; font-size: 1rem; color: var(--text-light); font-weight: 600;}
+.chart-area {
+    position: relative; /* Necessário para posicionar a mensagem 'no-data' */
+    min-height: 250px; /* Altura mínima para o gráfico ou mensagem */
+    display: flex; /* Para centralizar a mensagem */
+    justify-content: center;
+    align-items: center;
+}
+.no-data-message {
+    /* Estilos para a mensagem de 'sem dados' */
+    text-align: center;
+    color: var(--text-muted);
+    font-style: italic;
+    padding: 10px;
+    display: flex; /* Usado por checkChartData para mostrar/esconder */
+    justify-content: center;
+    align-items: center;
+    font-size: 0.9rem;
+    width: 100%;
+    height: 100%;
+    position: absolute; /* Cobre a área do canvas */
+    top: 0;
+    left: 0;
+}
+canvas { max-width: 100%; height: auto; display: block; /* Canvas visível por padrão */ }
+
+
+/* Seção de Estatísticas Textuais (Nova) */
+.text-stats-section {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: rgba(0,0,0,0.02); /* Fundo sutil */
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+body.theme-dark .text-stats-section {
+    background-color: rgba(255,255,255,0.03);
+}
+.text-stats-section h2 {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    text-align: center;
+    border-bottom: none;
+    color: var(--text-color);
+    font-weight: 600;
+}
+#text-stats-content { /* Reutiliza estilo do mini-dashboard mas como grid */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    background-color: var(--section-bg); /* Fundo da seção para contraste */
+    padding: 15px;
+    border-radius: 8px;
+}
+#text-stats-content span {
+    font-size: 0.9rem;
+    display: flex; /* Para alinhar ícone e texto */
+    align-items: center;
+    justify-content: center; /* Centraliza conteúdo na célula */
+    text-align: center;
+    gap: 8px;
+    color: var(--text-light);
+}
+#text-stats-content i {
+    color: var(--secondary-color); /* Cor padrão para ícones */
+    width: 18px;
+    text-align: center;
+    flex-shrink: 0;
+}
+#text-stats-content strong {
+    font-size: 1.1em; /* Destaca o número */
+    color: var(--text-color);
+    font-weight: 700;
+}
+
+/* Rodapé */
+.app-footer {
+    text-align: center;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+/* Media Queries para Responsividade */
+@media (max-width: 920px) {
+    .container { padding: 20px; max-width: 100%; margin: 15px; }
+     .add-goal-form { grid-template-columns: 1fr; } /* Empilha campos de meta */
+     #add-goal-btn { justify-self: stretch; } /* Botão ocupa largura total */
+}
+
+@media (max-width: 768px) {
+    body { padding: 15px 10px; }
+    .container { padding: 20px 15px;}
+    .header-top { flex-direction: column; align-items: flex-start;} /* Cabeçalho empilhado */
+    .settings-controls { margin-top: 10px; justify-content: flex-start; }
+    #time-display { font-size: 4.5rem; } /* Reduz tamanho do timer */
+    .timer-section { flex-direction: column; gap: 20px; padding: 15px; } /* Empilha timer e tarefa */
+    .task-details { flex: 1; } /* Garante que ocupe espaço */
+    .mini-dashboard { justify-content: flex-start; gap: 10px 20px; } /* Alinha stats à esquerda */
+    .log-controls { flex-direction: column; align-items: flex-start; gap: 10px;}
+    .charts-container { grid-template-columns: 1fr; } /* Um gráfico por linha */
+    .custom-goal-item { gap: 8px; }
+    .goal-progress { margin-left: 0; margin-top: 5px; flex-basis: 100%; text-align: right;} /* Progresso abaixo em telas menores */
+    .remove-goal-btn { margin-left: auto; } /* Botão de remover meta vai para o fim */
+    #text-stats-content { grid-template-columns: 1fr; } /* Uma stat por linha */
+}
+
+@media (max-width: 480px) {
+    body { padding: 10px 5px; }
+    .container { padding: 15px; border-radius: 15px; }
+    .app-header h1 { font-size: 1.5rem; }
+    #time-display { font-size: 3.8rem; }
+    .controls button, .button-like-label { font-size: 0.85rem; padding: 8px 12px; }
+    .mode-switcher label { font-size: 0.8rem; padding: 6px 10px; gap: 4px;}
+    .mini-dashboard { font-size: 0.8rem; gap: 8px 15px; }
+    section { padding: 15px; }
+    section h2 { font-size: 1.2rem; }
+    #log-table th, #log-table td { font-size: 0.75rem; padding: 8px 6px;}
+    .delete-log-btn { font-size: 0.8rem; }
+    .settings-controls button, .button-like-label { font-size: 0.8rem; padding: 5px 8px;}
+    .custom-goal-item { font-size: 0.85rem; }
+    .goal-details, .goal-progress { font-size: 0.75rem; }
+    .add-goal-form { gap: 10px; }
+    .add-goal-form input, .add-goal-form select, #add-goal-btn { font-size: 0.9rem; }
+    .sequence-item { font-size: 0.8rem; }
+    .sequence-item input[type="number"] { width: 45px; font-size: 0.8rem;}
+    .long-break-group { font-size: 0.85rem; }
+    .long-break-group input[type="number"] { width: 50px; }
+    #text-stats-content span { font-size: 0.85rem; }
+}

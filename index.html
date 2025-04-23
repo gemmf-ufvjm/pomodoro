@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomodoro Mourão Suite v3.1</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏆</text></svg>">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body id="body" class="theme-light">
+
+    <div id="toast-notification" class="toast"></div>
+
+    <div class="container">
+
+        <header class="app-header">
+            <div class="header-top">
+                <h1><i class="fa-solid fa-trophy"></i> Pomodoro Mourão</h1>
+                <div class="settings-controls">
+                     <button id="theme-toggle-button" title="Alternar Tema"><i class="fa-solid fa-circle-half-stroke"></i></button>
+                     <button id="export-data-button" title="Exportar Logs e Configurações"><i class="fa-solid fa-file-export"></i></button>
+                     <label for="import-file-input" id="import-data-button" class="button-like-label" title="Importar Logs e Configurações (.json)">
+                         <i class="fa-solid fa-file-import"></i>
+                         <input type="file" id="import-file-input" accept=".json" style="display: none;">
+                     </label>
+                     <button id="reset-all-button" title="Resetar Tudo (Logs, Configs, Metas)"><i class="fa-solid fa-power-off"></i></button>
+                </div>
+            </div>
+            <div class="mode-switcher">
+                 <label>
+                    <input type="radio" name="timer-mode" value="pomodoro" checked>
+                    <i class="fa-solid fa-stopwatch-20"></i> Pomodoro
+                </label>
+                <label>
+                    <input type="radio" name="timer-mode" value="focus">
+                    <i class="fa-solid fa-person-running"></i> Foco/Descanso Livre
+                </label>
+            </div>
+            <div class="mini-dashboard">
+                <span><i class="fa-solid fa-bullseye"></i> Ciclos Hoje: <strong id="stat-cycles-today">0</strong></span>
+                <span><i class="fa-solid fa-brain"></i> Foco Hoje: <strong id="stat-focus-today">0</strong> min</span>
+                <span><i class="fa-solid fa-mug-saucer"></i> Descanso Hoje: <strong id="stat-break-today">0</strong> min</span>
+            </div>
+        </header>
+
+        <section class="timer-section">
+            <div class="timer">
+                <h2 id="timer-status">Pronto para começar!</h2>
+                <div id="time-display">00:00</div>
+                <div class="controls">
+                    <button id="start-pause-button" class="cta-button" title="Iniciar/Pausar (Espaço)"><i class="fa-solid fa-play"></i> Iniciar</button>
+                    <button id="reset-button" title="Resetar Timer (R)"><i class="fa-solid fa-rotate-left"></i> Resetar</button>
+                    <button id="focus-log-button" class="focus-control" style="display: none;" title="Registrar Sessão Atual (L)"><i class="fa-solid fa-save"></i> Registrar</button>
+                    <button id="focus-switch-button" class="focus-control" style="display: none;" title="Alternar Foco/Descanso (S)"><i class="fa-solid fa-repeat"></i> Alternar</button>
+                </div>
+                 <div class="focus-options" style="display: none;">
+                    <label title="Zerar cronômetro após registrar o tempo">
+                        <input type="checkbox" id="focus-reset-on-log"> Zerar ao Registrar
+                    </label>
+                 </div>
+            </div>
+
+            <div class="task-details">
+                 <div class="input-group">
+                    <label for="task-input"><i class="fa-solid fa-pencil"></i> Tarefa Atual?</label>
+                    <input type="text" id="task-input" placeholder="Descreva sua tarefa...">
+                </div>
+                <div class="input-group">
+                     <label for="category-input"><i class="fa-solid fa-tags"></i> Categoria</label>
+                     <input type="text" id="category-input" list="category-suggestions" placeholder="Ex: Estudo, Trabalho, Pessoal">
+                     <datalist id="category-suggestions">
+                         <!-- Populado via JS -->
+                     </datalist>
+                </div>
+                 <div class="input-group">
+                     <label for="session-notes"><i class="fa-solid fa-note-sticky"></i> Notas da Sessão:</label>
+                     <textarea id="session-notes" rows="2" placeholder="Alguma observação sobre esta sessão?"></textarea>
+                </div>
+            </div>
+        </section>
+
+        <section id="settings-section" class="settings-section">
+             <div id="general-settings">
+                 <h2><i class="fa-solid fa-sliders"></i> Configurações Gerais</h2>
+                 <div class="input-group sound-group">
+                    <label for="sound-select"><i class="fa-solid fa-volume-high"></i> Som de Notificação:</label>
+                    <select id="sound-select">
+                        <option value="alarm_clock">Alarme Relógio</option>
+                        <option value="bell">Sino Suave</option>
+                        <option value="digital">Digital Curto</option>
+                        <option value="none">Nenhum</option>
+                    </select>
+                    <button id="play-sound-test" title="Testar Som"><i class="fa-solid fa-play-circle"></i></button>
+                </div>
+                <div class="info-text">
+                    <i class="fa-solid fa-keyboard"></i> Atalhos: [Espaço] Iniciar/Pausar, [R] Resetar, [S] Alternar Foco/Descanso (Modo Foco), [L] Logar (Modo Foco)
+                    <br><i class="fa-solid fa-volume-mute"></i> O som pode não funcionar antes da primeira interação com a página.
+                </div>
+             </div>
+
+            <div id="pomodoro-settings" style="display: block;">
+                <h2><i class="fa-solid fa-gear"></i> Configurar Ciclos Pomodoro</h2>
+                <div class="pomodoro-presets">
+                    <span>Presets:</span>
+                    <button class="preset-btn" data-work="25" data-break="5" data-reps="4">25/5 (Padrão)</button>
+                    <button class="preset-btn" data-work="50" data-break="10" data-reps="2">50/10</button>
+                     <button class="preset-btn" data-work="15" data-break="3" data-reps="4">15/3 (Curto)</button>
+                </div>
+                <p class="settings-info">Ou defina sua sequência personalizada:</p>
+                <div id="cycle-sequence-list">
+                    <!-- Blocos de sequência gerados por JS -->
+                </div>
+                <button id="add-sequence-btn"><i class="fa-solid fa-plus"></i> Adicionar Bloco</button>
+                <div class="long-break-group">
+                    <label for="long-break-interval">Descanso Longo a cada:</label>
+                    <input type="number" id="long-break-interval" value="4" min="0"> ciclos (0=desat.)
+                    <label for="long-break-duration">Duração:</label>
+                    <input type="number" id="long-break-duration" value="15" min="1"> min
+                </div>
+            </div>
+        </section>
+
+        <section class="custom-goals-section">
+             <h2><i class="fa-solid fa-flag-checkered"></i> Metas Personalizadas</h2>
+             <div id="custom-goals-list">
+                 <!-- Metas geradas por JS -->
+             </div>
+             <div class="add-goal-form">
+                 <h3>Adicionar Nova Meta:</h3>
+                 <input type="text" id="new-goal-name" placeholder="Nome da Conquista (Ex: Foco Total)">
+                 <select id="new-goal-type">
+                     <option value="focus_minutes_today">Minutos de Foco Hoje</option>
+                     <option value="pomodoro_cycles_today">Ciclos Pomodoro Hoje</option>
+                     <option value="total_focus_minutes">Total Minutos de Foco (Histórico)</option>
+                     <option value="total_pomodoro_cycles">Total Ciclos Pomodoro (Histórico)</option>
+                 </select>
+                 <input type="number" id="new-goal-target" placeholder="Valor da Meta (Ex: 120)" min="1">
+                 <button id="add-goal-btn"><i class="fa-solid fa-plus"></i> Adicionar Meta</button>
+             </div>
+        </section>
+
+        <section class="log-stats-section">
+             <div class="tabs">
+                <button class="tab-button active" data-tab="log"><i class="fa-solid fa-list-check"></i> Registro</button>
+                <button class="tab-button" data-tab="stats"><i class="fa-solid fa-chart-pie"></i> Estatísticas</button>
+            </div>
+
+            <div id="log-tab-content" class="tab-content active">
+                <div class="log-controls">
+                    <h2>Registro de Atividades</h2>
+                    <div>
+                        <button id="clear-log-button" title="Limpar Tabela (Irreversível!)"><i class="fa-solid fa-eraser"></i> Limpar Tabela</button>
+                        <button id="download-log-button" title="Baixar Registro como CSV"><i class="fa-solid fa-download"></i> Baixar CSV</button>
+                    </div>
+                </div>
+                <div class="log-table-container">
+                    <table id="log-table">
+                        <thead>
+                            <tr>
+                                <th>Tarefa</th>
+                                <th>Categoria</th>
+                                <th>Notas</th>
+                                <th>Tipo/Modo</th>
+                                <th>Duração (min)</th>
+                                <th>Data</th>
+                                <th>Hora</th>
+                                <th>Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody id="log-body"></tbody>
+                    </table>
+                    <p id="log-empty-message" class="info-text" style="display: none; margin-top: 15px; text-align: center;">Nenhum registro encontrado.</p>
+                </div>
+            </div>
+
+            <div id="stats-tab-content" class="tab-content">
+                 <h2>Estatísticas Visuais</h2>
+                 <div class="charts-container">
+                     <div class="chart-wrapper">
+                         <h3>Tempo por Categoria</h3>
+                         <div class="chart-area">
+                             <canvas id="categoryChart"></canvas>
+                             <p class="no-data-message" id="categoryChart-no-data" style="display: none;">Sem dados de foco/trabalho para exibir.</p>
+                         </div>
+                     </div>
+                     <div class="chart-wrapper">
+                          <h3>Tempo por Tarefa (Top 5 Foco/Trabalho)</h3>
+                           <div class="chart-area">
+                               <canvas id="taskChart"></canvas>
+                               <p class="no-data-message" id="taskChart-no-data" style="display: none;">Sem dados de foco/trabalho para exibir.</p>
+                           </div>
+                     </div>
+                      <div class="chart-wrapper">
+                          <h3>Atividade Diária (Últimos 7 dias)</h3>
+                           <div class="chart-area">
+                               <canvas id="dailyActivityChart"></canvas>
+                               <p class="no-data-message" id="dailyActivityChart-no-data" style="display: none;">Sem dados nos últimos 7 dias.</p>
+                           </div>
+                     </div>
+                      <div class="chart-wrapper">
+                          <h3>Foco/Trab vs. Descanso Diário (Últimos 7 dias)</h3>
+                           <div class="chart-area">
+                               <canvas id="focusBreakChart"></canvas>
+                               <p class="no-data-message" id="focusBreakChart-no-data" style="display: none;">Sem dados nos últimos 7 dias.</p>
+                           </div>
+                     </div>
+                     <div class="chart-wrapper">
+                          <h3>Atividade por Hora do Dia (Foco/Trabalho)</h3>
+                           <div class="chart-area">
+                               <canvas id="timeOfDayChart"></canvas>
+                               <p class="no-data-message" id="timeOfDayChart-no-data" style="display: none;">Sem dados de foco/trabalho para exibir.</p>
+                           </div>
+                     </div>
+                 </div>
+                 <div class="text-stats-section">
+                     <h2>Resumo Rápido</h2>
+                     <div id="text-stats-content" class="mini-dashboard">
+                         <span><i class="fa-solid fa-calendar-day"></i> Foco Hoje: <strong id="text-stat-focus-today">0</strong> min</span>
+                         <span><i class="fa-solid fa-calendar-week"></i> Foco Semana: <strong id="text-stat-focus-week">0</strong> min</span>
+                         <span><i class="fa-solid fa-bullseye"></i> Ciclos Hoje: <strong id="text-stat-cycles-today">0</strong></span>
+                         <span><i class="fa-solid fa-flag"></i> Ciclos Semana: <strong id="text-stat-cycles-week">0</strong></span>
+                         <span><i class="fa-solid fa-clock"></i> Média Sessão Foco/Trab: <strong id="text-stat-avg-session">0</strong> min</span>
+                         <span><i class="fa-solid fa-trophy"></i> Total Foco/Trab Geral: <strong id="text-stat-total-focus-all">0</strong> min</span>
+                         <span><i class="fa-solid fa-medal"></i> Total Ciclos Geral: <strong id="text-stat-total-cycles-all">0</strong></span>
+                     </div>
+                 </div>
+            </div>
+        </section>
+
+        <footer class="app-footer">
+             <p>© <span id="current-year"></span> Pomodoro Mourão.</p>
+        </footer>
+
+    </div>
+
+    <audio id="audio-player" preload="auto"></audio>
+    <span id="sound-url-alarm_clock" data-url="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg" style="display:none;"></span>
+    <span id="sound-url-bell" data-url="https://cdn.pixabay.com/audio/2022/10/17/audio_7496553947.mp3" style="display:none;"></span>
+    <span id="sound-url-digital" data-url="https://actions.google.com/sounds/v1/alarms/digital_watch_alarm_long.ogg" style="display:none;"></span>
+
+    <script src="script.js"></script>
+</body>
+</html>
