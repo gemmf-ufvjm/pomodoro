@@ -353,7 +353,7 @@ function updateDisplay() {
              }
         }
 
-        document.title = `${titleTime} - ${titlePhase} | Pomodoro Mourão`;
+        document.title = `${titleTime} - ${titlePhase} | Pomoverso`;
 
         // REMOVED: Atualiza Canvas do PiP se ativo
         // REMOVED: if (isPipActive && pipCanvasCtx) {
@@ -1671,7 +1671,7 @@ function exportData() {
         const link = document.createElement("a");
         link.style.display = 'none'; link.setAttribute("href", url);
         const timestamp = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-        link.setAttribute("download", `pomodoro_mourao_backup_${timestamp}_v3.3.json`); // Nome indica versão
+        link.setAttribute("download", `pomoverso_backup_${timestamp}_v3.3.json`); // Nome indica versão
         document.body.appendChild(link); link.click(); document.body.removeChild(link);
         URL.revokeObjectURL(url);
         showToast("Dados exportados com sucesso!", "success");
@@ -2321,7 +2321,7 @@ function checkAndShowBrowserNotification(phaseEnded) {
         const options = {
             body: body,
             icon: icon,
-            tag: 'pomodoro-mourao-phase-end', // Evita múltiplas notifs iguais
+            tag: 'pomoverso-phase-end', // Evita múltiplas notifs iguais
             renotify: true // Permite substituir com a mesma tag
         };
         try {
