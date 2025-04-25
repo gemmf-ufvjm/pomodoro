@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pomodoro Mourão Suite v3.1</title>
+    <title>Pomodoro Mourão Suite v3.3</title> <!-- Version Updated -->
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,12 +16,82 @@
 
     <div id="toast-notification" class="toast"></div>
 
+    <!-- Removed Hidden Canvas and Video for Picture-in-Picture (Confirmed Removed) -->
+
+    <!-- Manual Log Entry Modal -->
+    <dialog id="manual-log-modal" class="modal">
+        <form id="manual-log-form">
+            <h2><i class="fa-solid fa-edit"></i> Adicionar Registro Manual</h2>
+            <div class="modal-input-group">
+                <label for="manual-task">Tarefa:</label>
+                <input type="text" id="manual-task" list="task-suggestions" required placeholder="Tarefa realizada">
+            </div>
+            <div class="modal-input-group">
+                <label for="manual-category">Categoria:</label>
+                <input type="text" id="manual-category" list="category-suggestions" placeholder="Categoria (opcional)">
+            </div>
+            <div class="modal-input-group">
+                <label for="manual-duration">Duração (minutos):</label>
+                <input type="number" id="manual-duration" required min="1" placeholder="Ex: 25">
+            </div>
+            <div class="modal-input-group modal-datetime-group">
+                <div>
+                    <label for="manual-date">Data:</label>
+                    <input type="date" id="manual-date" required>
+                </div>
+                <div>
+                    <label for="manual-time">Hora (fim):</label>
+                    <input type="time" id="manual-time" required>
+                </div>
+            </div>
+            <div class="modal-input-group">
+                <label for="manual-notes">Notas:</label>
+                <textarea id="manual-notes" rows="2" placeholder="Observações (opcional)"></textarea>
+            </div>
+            <div class="modal-actions">
+                <button type="button" id="cancel-manual-log" class="modal-button secondary">Cancelar</button>
+                <button type="submit" id="submit-manual-log" class="modal-button primary"><i class="fa-solid fa-save"></i> Salvar Registro</button>
+            </div>
+        </form>
+    </dialog>
+
+    <!-- Manage Saved Items Modal -->
+    <dialog id="manage-saved-items-modal" class="modal">
+        <div class="modal-content"> <!-- Added container for better styling -->
+            <h2><i class="fa-solid fa-list-ul"></i> Gerenciar Itens Salvos</h2>
+
+            <div class="saved-items-container">
+                <div class="saved-items-column">
+                    <h3><i class="fa-solid fa-pencil"></i> Tarefas Salvas</h3>
+                    <ul id="saved-tasks-list" class="saved-item-list">
+                        <!-- Tarefas salvas serão listadas aqui via JS -->
+                        <li class="no-items-message" style="display: none;">Nenhuma tarefa salva.</li>
+                    </ul>
+                </div>
+
+                <div class="saved-items-column">
+                    <h3><i class="fa-solid fa-tags"></i> Categorias Salvas</h3>
+                    <ul id="saved-categories-list" class="saved-item-list">
+                        <!-- Categorias salvas serão listadas aqui via JS -->
+                         <li class="no-items-message" style="display: none;">Nenhuma categoria salva.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" id="close-manage-modal" class="modal-button secondary">Fechar</button>
+            </div>
+        </div>
+    </dialog>
+
+
     <div class="container">
 
         <header class="app-header">
             <div class="header-top">
                 <h1><i class="fa-solid fa-trophy"></i> Pomodoro Mourão</h1>
                 <div class="settings-controls">
+                     <!-- Removed PiP Button (Confirmed Removed) -->
                      <button id="theme-toggle-button" title="Alternar Tema"><i class="fa-solid fa-circle-half-stroke"></i></button>
                      <button id="export-data-button" title="Exportar Logs e Configurações"><i class="fa-solid fa-file-export"></i></button>
                      <label for="import-file-input" id="import-data-button" class="button-like-label" title="Importar Logs e Configurações (.json)">
@@ -43,10 +113,27 @@
             </div>
             <div class="mini-dashboard">
                 <span><i class="fa-solid fa-bullseye"></i> Ciclos Hoje: <strong id="stat-cycles-today">0</strong></span>
-                <span><i class="fa-solid fa-brain"></i> Foco Hoje: <strong id="stat-focus-today">0</strong> min</span>
+                <span><i class="fa-solid fa-brain"></i> Foco/Trab Hoje: <strong id="stat-focus-today">0</strong> min</span>
                 <span><i class="fa-solid fa-mug-saucer"></i> Descanso Hoje: <strong id="stat-break-today">0</strong> min</span>
             </div>
+             <div id="quote-display" class="quote-display">
+                 <!-- Citação motivacional -->
+                 "A jornada de mil milhas começa com um único passo." - Lao Tsé
+             </div>
         </header>
+
+        <section class="daily-progress-section">
+            <h2>Progresso Diário (Foco/Trabalho)</h2>
+            <div class="daily-progress-container">
+                <span id="daily-progress-label">0 min / 120 min</span>
+                <div class="daily-progress-bar">
+                    <div id="daily-progress-fill" class="daily-progress-fill"></div>
+                    <div id="daily-goal-markers" class="daily-goal-markers">
+                        <!-- Marcadores de metas -->
+                    </div>
+                </div>
+            </div>
+        </section>
 
         <section class="timer-section">
             <div class="timer">
@@ -63,16 +150,26 @@
                         <input type="checkbox" id="focus-reset-on-log"> Zerar ao Registrar
                     </label>
                  </div>
+                 <!-- Session Goal Input -->
+                 <div class="session-goal-input">
+                    <label for="session-goal"><i class="fa-solid fa-flag-checkered"></i> Meta da Sessão:</label>
+                    <input type="text" id="session-goal" placeholder="O que você quer concluir agora?">
+                </div>
             </div>
 
             <div class="task-details">
-                 <div class="input-group">
+                 <div class="input-group with-save">
                     <label for="task-input"><i class="fa-solid fa-pencil"></i> Tarefa Atual?</label>
-                    <input type="text" id="task-input" placeholder="Descreva sua tarefa...">
+                    <input type="text" id="task-input" list="task-suggestions" placeholder="Descreva sua tarefa...">
+                    <button class="save-btn" id="save-task-btn" title="Salvar Tarefa para uso futuro"><i class="fa-solid fa-floppy-disk"></i></button>
+                     <datalist id="task-suggestions">
+                         <!-- Populado via JS -->
+                     </datalist>
                 </div>
-                <div class="input-group">
+                <div class="input-group with-save">
                      <label for="category-input"><i class="fa-solid fa-tags"></i> Categoria</label>
                      <input type="text" id="category-input" list="category-suggestions" placeholder="Ex: Estudo, Trabalho, Pessoal">
+                     <button class="save-btn" id="save-category-btn" title="Salvar Categoria para uso futuro"><i class="fa-solid fa-floppy-disk"></i></button>
                      <datalist id="category-suggestions">
                          <!-- Populado via JS -->
                      </datalist>
@@ -87,20 +184,52 @@
         <section id="settings-section" class="settings-section">
              <div id="general-settings">
                  <h2><i class="fa-solid fa-sliders"></i> Configurações Gerais</h2>
-                 <div class="input-group sound-group">
-                    <label for="sound-select"><i class="fa-solid fa-volume-high"></i> Som de Notificação:</label>
-                    <select id="sound-select">
-                        <option value="alarm_clock">Alarme Relógio</option>
-                        <option value="bell">Sino Suave</option>
-                        <option value="digital">Digital Curto</option>
-                        <option value="none">Nenhum</option>
-                    </select>
-                    <button id="play-sound-test" title="Testar Som"><i class="fa-solid fa-play-circle"></i></button>
-                </div>
-                <div class="info-text">
-                    <i class="fa-solid fa-keyboard"></i> Atalhos: [Espaço] Iniciar/Pausar, [R] Resetar, [S] Alternar Foco/Descanso (Modo Foco), [L] Logar (Modo Foco)
-                    <br><i class="fa-solid fa-volume-mute"></i> O som pode não funcionar antes da primeira interação com a página.
-                </div>
+                 <!-- Sound Settings (Phase Specific) -->
+                 <div class="input-group sound-group phase-sound-group">
+                    <div>
+                        <label for="sound-select-work"><i class="fa-solid fa-brain"></i> Som Fim Trabalho/Foco:</label>
+                        <select id="sound-select-work">
+                            <option value="bell">Sino Suave (Padrão)</option>
+                            <option value="alarm_clock">Alarme Relógio</option>
+                            <option value="digital">Digital Curto</option>
+                            <option value="chime">Gentil Chime</option>
+                            <option value="success">Sucesso Curto</option>
+                            <option value="ting">Ting Metálico</option>
+                            <option value="flute">Flauta Breve</option>
+                            <option value="none">Nenhum</option>
+                        </select>
+                        <button id="play-sound-test-work" class="sound-test-btn" title="Testar Som Trabalho"><i class="fa-solid fa-play-circle"></i></button>
+                    </div>
+                    <div>
+                        <label for="sound-select-break"><i class="fa-solid fa-mug-saucer"></i> Som Fim Descanso:</label>
+                        <select id="sound-select-break">
+                            <option value="ting">Ting Metálico (Padrão)</option>
+                             <option value="bell">Sino Suave</option>
+                            <option value="alarm_clock">Alarme Relógio</option>
+                            <option value="digital">Digital Curto</option>
+                            <option value="chime">Gentil Chime</option>
+                            <option value="success">Sucesso Curto</option>
+                            <option value="flute">Flauta Breve</option>
+                            <option value="none">Nenhum</option>
+                        </select>
+                         <button id="play-sound-test-break" class="sound-test-btn" title="Testar Som Descanso"><i class="fa-solid fa-play-circle"></i></button>
+                    </div>
+                 </div>
+                 <!-- Volume Slider -->
+                 <div class="input-group volume-group">
+                     <label for="volume-control"><i class="fa-solid fa-volume-low"></i> Volume:</label>
+                     <input type="range" id="volume-control" min="0" max="1" step="0.05" value="0.7" title="Ajustar Volume do Som">
+                     <span id="volume-value">70%</span>
+                 </div>
+                 <!-- Browser Notifications -->
+                 <div class="input-group notification-group">
+                      <label for="browser-notifications-enabled">
+                         <i class="fa-solid fa-bell"></i> Notificações do Navegador:
+                         <input type="checkbox" id="browser-notifications-enabled" title="Ativar notificações na área de trabalho ao fim de cada fase">
+                         <span id="notification-permission-status">(Permissão necessária)</span>
+                      </label>
+                      <button id="request-notification-permission" style="display: none;" class="small-btn">Pedir Permissão</button>
+                 </div>
              </div>
 
             <div id="pomodoro-settings" style="display: block;">
@@ -113,7 +242,7 @@
                 </div>
                 <p class="settings-info">Ou defina sua sequência personalizada:</p>
                 <div id="cycle-sequence-list">
-                    <!-- Blocos de sequência gerados por JS -->
+                    <!-- Blocos de sequência -->
                 </div>
                 <button id="add-sequence-btn"><i class="fa-solid fa-plus"></i> Adicionar Bloco</button>
                 <div class="long-break-group">
@@ -122,24 +251,39 @@
                     <label for="long-break-duration">Duração:</label>
                     <input type="number" id="long-break-duration" value="15" min="1"> min
                 </div>
+                <!-- Auto-Start Options -->
+                 <div class="auto-start-options">
+                     <label title="Iniciar automaticamente o próximo período de trabalho após o descanso">
+                         <input type="checkbox" id="auto-start-work"> Auto-Iniciar Trabalho
+                     </label>
+                     <label title="Iniciar automaticamente o próximo período de descanso após o trabalho">
+                         <input type="checkbox" id="auto-start-break"> Auto-Iniciar Descanso
+                     </label>
+                 </div>
             </div>
         </section>
 
         <section class="custom-goals-section">
              <h2><i class="fa-solid fa-flag-checkered"></i> Metas Personalizadas</h2>
              <div id="custom-goals-list">
-                 <!-- Metas geradas por JS -->
+                 <!-- Metas -->
              </div>
              <div class="add-goal-form">
                  <h3>Adicionar Nova Meta:</h3>
-                 <input type="text" id="new-goal-name" placeholder="Nome da Conquista (Ex: Foco Total)">
+                 <input type="text" id="new-goal-name" placeholder="Nome da Conquista">
                  <select id="new-goal-type">
-                     <option value="focus_minutes_today">Minutos de Foco Hoje</option>
+                     <option value="focus_work_minutes_today">Minutos Foco/Trab Hoje</option>
                      <option value="pomodoro_cycles_today">Ciclos Pomodoro Hoje</option>
-                     <option value="total_focus_minutes">Total Minutos de Foco (Histórico)</option>
-                     <option value="total_pomodoro_cycles">Total Ciclos Pomodoro (Histórico)</option>
+                     <option value="focus_sessions_today">Sessões Foco Hoje</option>
+                     <option value="consecutive_days">Dias Consecutivos (>0 min)</option>
+                     <option value="category_minutes_today">Minutos Categoria Hoje</option>
+                     <option value="total_focus_work_minutes">Total Minutos Foco/Trab (Hist.)</option>
+                     <option value="total_pomodoro_cycles">Total Ciclos Pomodoro (Hist.)</option>
+                     <option value="total_focus_sessions">Total Sessões Foco (Hist.)</option>
+                     <option value="total_category_minutes">Total Minutos Categoria (Hist.)</option>
                  </select>
-                 <input type="number" id="new-goal-target" placeholder="Valor da Meta (Ex: 120)" min="1">
+                 <input type="text" id="new-goal-category" list="category-suggestions" placeholder="Categoria (se aplicável)" style="display: none;">
+                 <input type="number" id="new-goal-target" placeholder="Valor Meta" min="1">
                  <button id="add-goal-btn"><i class="fa-solid fa-plus"></i> Adicionar Meta</button>
              </div>
         </section>
@@ -154,8 +298,10 @@
                 <div class="log-controls">
                     <h2>Registro de Atividades</h2>
                     <div>
-                        <button id="clear-log-button" title="Limpar Tabela (Irreversível!)"><i class="fa-solid fa-eraser"></i> Limpar Tabela</button>
-                        <button id="download-log-button" title="Baixar Registro como CSV"><i class="fa-solid fa-download"></i> Baixar CSV</button>
+                         <button id="add-manual-log-button" title="Adicionar um registro que não foi cronometrado"><i class="fa-solid fa-edit"></i> Adicionar Manual</button>
+                         <button id="manage-saved-items-btn" title="Gerenciar tarefas e categorias salvas"><i class="fa-solid fa-list-ul"></i> Gerenciar Salvos</button> <!-- Botão para abrir modal -->
+                         <button id="clear-log-button" title="Limpar Tabela (Irreversível!)"><i class="fa-solid fa-eraser"></i> Limpar Tabela</button>
+                         <button id="download-log-button" title="Baixar Registro como CSV"><i class="fa-solid fa-download"></i> Baixar CSV</button>
                     </div>
                 </div>
                 <div class="log-table-container">
@@ -182,51 +328,57 @@
                  <h2>Estatísticas Visuais</h2>
                  <div class="charts-container">
                      <div class="chart-wrapper">
-                         <h3>Tempo por Categoria</h3>
+                         <h3>Tempo por Categoria (Foco/Trabalho/Manual)</h3> <!-- Incluído Manual -->
                          <div class="chart-area">
                              <canvas id="categoryChart"></canvas>
-                             <p class="no-data-message" id="categoryChart-no-data" style="display: none;">Sem dados de foco/trabalho para exibir.</p>
+                             <p class="no-data-message" id="categoryChart-no-data" style="display: none;">Sem dados.</p>
                          </div>
                      </div>
                      <div class="chart-wrapper">
-                          <h3>Tempo por Tarefa (Top 5 Foco/Trabalho)</h3>
+                          <h3>Tempo por Tarefa (Top 5 Foco/Trab/Manual)</h3> <!-- Incluído Manual -->
                            <div class="chart-area">
                                <canvas id="taskChart"></canvas>
-                               <p class="no-data-message" id="taskChart-no-data" style="display: none;">Sem dados de foco/trabalho para exibir.</p>
+                               <p class="no-data-message" id="taskChart-no-data" style="display: none;">Sem dados.</p>
                            </div>
                      </div>
                       <div class="chart-wrapper">
-                          <h3>Atividade Diária (Últimos 7 dias)</h3>
+                          <h3>Atividade Diária (Foco+Manual/Ciclos - Últimos 7 dias)</h3> <!-- Incluído Manual -->
                            <div class="chart-area">
                                <canvas id="dailyActivityChart"></canvas>
-                               <p class="no-data-message" id="dailyActivityChart-no-data" style="display: none;">Sem dados nos últimos 7 dias.</p>
+                               <p class="no-data-message" id="dailyActivityChart-no-data" style="display: none;">Sem dados.</p>
                            </div>
                      </div>
                       <div class="chart-wrapper">
-                          <h3>Foco/Trab vs. Descanso Diário (Últimos 7 dias)</h3>
+                          <h3>Foco/Trab/Manual vs. Descanso Diário (Minutos - Últimos 7 dias)</h3> <!-- Incluído Manual -->
                            <div class="chart-area">
                                <canvas id="focusBreakChart"></canvas>
-                               <p class="no-data-message" id="focusBreakChart-no-data" style="display: none;">Sem dados nos últimos 7 dias.</p>
+                               <p class="no-data-message" id="focusBreakChart-no-data" style="display: none;">Sem dados.</p>
                            </div>
                      </div>
                      <div class="chart-wrapper">
-                          <h3>Atividade por Hora do Dia (Foco/Trabalho)</h3>
+                          <h3>Atividade por Hora do Dia (Foco/Trab/Manual)</h3> <!-- Incluído Manual -->
                            <div class="chart-area">
                                <canvas id="timeOfDayChart"></canvas>
-                               <p class="no-data-message" id="timeOfDayChart-no-data" style="display: none;">Sem dados de foco/trabalho para exibir.</p>
+                               <p class="no-data-message" id="timeOfDayChart-no-data" style="display: none;">Sem dados.</p>
                            </div>
                      </div>
                  </div>
                  <div class="text-stats-section">
                      <h2>Resumo Rápido</h2>
                      <div id="text-stats-content" class="mini-dashboard">
-                         <span><i class="fa-solid fa-calendar-day"></i> Foco Hoje: <strong id="text-stat-focus-today">0</strong> min</span>
-                         <span><i class="fa-solid fa-calendar-week"></i> Foco Semana: <strong id="text-stat-focus-week">0</strong> min</span>
-                         <span><i class="fa-solid fa-bullseye"></i> Ciclos Hoje: <strong id="text-stat-cycles-today">0</strong></span>
-                         <span><i class="fa-solid fa-flag"></i> Ciclos Semana: <strong id="text-stat-cycles-week">0</strong></span>
-                         <span><i class="fa-solid fa-clock"></i> Média Sessão Foco/Trab: <strong id="text-stat-avg-session">0</strong> min</span>
-                         <span><i class="fa-solid fa-trophy"></i> Total Foco/Trab Geral: <strong id="text-stat-total-focus-all">0</strong> min</span>
-                         <span><i class="fa-solid fa-medal"></i> Total Ciclos Geral: <strong id="text-stat-total-cycles-all">0</strong></span>
+                         <!-- Conteúdo atualizado -->
+                         <span><i class="fa-solid fa-calendar-day"></i> Foco/Trab/Man Hoje: <strong id="text-stat-focus-work-today">0</strong> min</span>
+                         <span><i class="fa-solid fa-calendar-week"></i> Foco/Trab/Man Semana: <strong id="text-stat-focus-work-week">0</strong> min</span>
+                         <span><i class="fa-solid fa-mug-hot"></i> Descanso Hoje: <strong id="text-stat-break-today">0</strong> min</span>
+                         <span><i class="fa-solid fa-calendar-alt"></i> Descanso Semana: <strong id="text-stat-break-week">0</strong> min</span>
+                         <span><i class="fa-solid fa-bullseye"></i> Ciclos Pom. Hoje: <strong id="text-stat-cycles-today">0</strong></span>
+                         <span><i class="fa-solid fa-flag"></i> Ciclos Pom. Semana: <strong id="text-stat-cycles-week">0</strong></span>
+                         <span><i class="fa-solid fa-clock"></i> Média Sessão Foco/Trab/Man: <strong id="text-stat-avg-session">0</strong> min</span>
+                         <span><i class="fa-solid fa-balance-scale"></i> Foco/Desc Hoje: <strong id="text-stat-ratio-today">N/A</strong></span>
+                         <span><i class="fa-solid fa-percentage"></i> Foco/Desc Semana: <strong id="text-stat-ratio-week">N/A</strong></span>
+                         <span><i class="fa-solid fa-trophy"></i> Total Foco/Trab/Man: <strong id="text-stat-total-focus-work-all">0</strong> min</span>
+                          <span><i class="fa-solid fa-couch"></i> Total Descanso: <strong id="text-stat-total-break-all">0</strong> min</span>
+                         <span><i class="fa-solid fa-medal"></i> Total Ciclos Pom.: <strong id="text-stat-total-cycles-all">0</strong></span>
                      </div>
                  </div>
             </div>
@@ -239,9 +391,14 @@
     </div>
 
     <audio id="audio-player" preload="auto"></audio>
+    <!-- Sons (URLs válidas) -->
     <span id="sound-url-alarm_clock" data-url="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg" style="display:none;"></span>
     <span id="sound-url-bell" data-url="https://cdn.pixabay.com/audio/2022/10/17/audio_7496553947.mp3" style="display:none;"></span>
     <span id="sound-url-digital" data-url="https://actions.google.com/sounds/v1/alarms/digital_watch_alarm_long.ogg" style="display:none;"></span>
+    <span id="sound-url-chime" data-url="https://cdn.pixabay.com/audio/2022/03/15/audio_7505a97151.mp3" style="display:none;"></span>
+    <span id="sound-url-success" data-url="https://cdn.pixabay.com/audio/2022/11/17/audio_70471539b6.mp3" style="display:none;"></span>
+    <span id="sound-url-ting" data-url="https://cdn.pixabay.com/audio/2021/08/09/audio_460c0fab1c.mp3" style="display:none;"></span>
+    <span id="sound-url-flute" data-url="https://cdn.pixabay.com/audio/2023/07/26/audio_702e18393b.mp3" style="display:none;"></span>
 
     <script src="script.js"></script>
 </body>
