@@ -1,4 +1,4 @@
-# Pomodoro
+# Pomodoro Mourao V 2.0
 
 
 * Link da pagina https://gemmf-ufvjm.github.io/pomodoro/
