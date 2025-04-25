@@ -570,3 +570,4 @@ body.theme-dark .saved-items-column { background-color: rgba(255,255,255,0.02); 
     .modal-actions { flex-direction: column; gap: var(--spacing-sm); }
     .modal-button { width: 100%; }
 }
+ 
