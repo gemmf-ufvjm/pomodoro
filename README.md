@@ -56,7 +56,7 @@ Um temporizador Pomodoro avançado e rastreador de atividades baseado na web, pr
 
 ### Acesse direto pelo site 
 
-[* Link da pagina Pomoverso/](https://pomoverso.vercel.app/)
+[https://pomoverso.vercel.app/](https://pomoverso.vercel.app/)
 
 ### Clonando o repositorio e acesso local
 
