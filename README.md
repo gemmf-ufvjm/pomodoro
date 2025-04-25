@@ -1,8 +1,9 @@
 # Pomodoro Mourao V 2.0
 
 
-* Link da pagina https://gemmf-ufvjm.github.io/pomodoro/
+[* Link da pagina https://gemmf-ufvjm.github.io/pomodoro/](https://pomoverso.vercel.app/)
 
 
-![image](https://github.com/user-attachments/assets/6aca8517-a9e7-491f-9ac6-4e750c0b441e)
+![image](https://github.com/user-attachments/assets/f63d969c-bf6c-453e-b549-3b6f8232f82c)
+
 
